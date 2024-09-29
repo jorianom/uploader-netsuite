@@ -50,8 +50,12 @@
     },
     "commands": [
       {
-        "command": "uploader-netsuite.helloWorld",
-        "title": "Hello World"
+        "command": "uploader-netsuite.Netsuite:Push File",
+        "title": "Push File to NetSuite"
+      },
+      {
+        "command": "uploader-netsuite.Netsuite:Pull File",
+        "title": "Pull File from NetSuite"
       }
     ],
     "viewsContainers": {
