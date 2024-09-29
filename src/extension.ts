@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { readFile } from 'fs/promises';
+import * as uploaderNetsuite from './uploader-netsuite';
 import * as fs from 'fs';
 
 // This method is called when your extension is activated
@@ -19,20 +20,9 @@ export function activate(context: vscode.ExtensionContext) {
 		const activeEditor = vscode.window.activeTextEditor;
 		if (activeEditor) {
 			const filePath = activeEditor.document.uri.fsPath;
-			console.log(`Archivo activo: ${filePath}`);
-			vscode.window.showInformationMessage(`Archivo activo: ${filePath}`);
-
-			const data = await readFile(filePath);
-			console.log(data.toString());
-			// fs.readFile(filePath, 'utf8', (err, data) => {
-			// 	if (err) {
-			// 		console.error('Error al leer el archivo:', err);
-			// 		return;
-			// 	}
-			// 	console.log('Contenido del archivo:', data);
-			// });
+			uploaderNetsuite.fielUpload(filePath);
 		}
-		vscode.window.showInformationMessage('Hello World from uploader-netsuite!');
+		// vscode.window.showInformationMessage('Hello World from uploader-netsuite!');
 	});
 
 	context.subscriptions.push(disposable);
