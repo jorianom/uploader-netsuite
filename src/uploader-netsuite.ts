@@ -7,17 +7,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const fileUpload = async (filePath: string) => {
-    vscode.window.showInformationMessage(`Archivo activo: ${path.basename(filePath)}`);
-
-    const data = await readFile(filePath);
-    let flagValidateFile = validateFile(data.toString(), filePath);
-    if (!flagValidateFile) {
-        return;
-    }
-    sendFile(filePath);
-}
-const fileDownload = async (filePath: string) => {
+const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor) => {
     let config = vscode.workspace.getConfiguration('uploaderNetSuite');
     let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(config);
     let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
@@ -29,25 +19,21 @@ const fileDownload = async (filePath: string) => {
         const response = await axios.post(url, data, {
             headers: { ...authHeaders, "Content-Type": "application/json" },
         });
+
+        console.log('Respuesta de NetSuite:', response.data);
         if (!response.data.success) {
             let error = response.data.message;
             message('Hubo un problema al obtener el archivo ' + error, true);
         } else {
             message('Archivo obtenido correctamente');
+            updateFile(response.data.fileContent, activeEditor);
         }
     } catch (error) {
         message('Error al obtener el archivo ' + error, true);
         console.error('Error al obtener el archivo:', error);
     }
 }
-const getFileData = (filePath: string) => {
-    let fileContents = fs.readFileSync(filePath, 'base64');
-    let filename = path.basename(filePath);
-    return {
-        fileContents,
-        filename
-    }
-}
+
 async function sendFile(filePath: string) {
     let config = vscode.workspace.getConfiguration('uploaderNetSuite');
     let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(config);
@@ -72,6 +58,42 @@ async function sendFile(filePath: string) {
     }
 }
 
+const fileUpload = async (filePath: string) => {
+    vscode.window.showInformationMessage(`Archivo activo: ${path.basename(filePath)}`);
+    const data = await readFile(filePath);
+    let flagValidateFile = validateFile(data.toString(), filePath);
+    if (!flagValidateFile) {
+        return;
+    }
+    sendFile(filePath);
+}
+
+const getFileData = (filePath: string) => {
+    let fileContents = fs.readFileSync(filePath, 'base64');
+    let filename = path.basename(filePath);
+    return {
+        fileContents,
+        filename
+    }
+}
+
+const updateFile = async (data: string, activeEditor: vscode.TextEditor) => {
+    if (!activeEditor) {
+        vscode.window.showErrorMessage('No hay ningún archivo activo para sobrescribir.');
+        return;
+    }
+    const document = activeEditor.document;
+    const entireRange = new vscode.Range(
+        document.positionAt(0),
+        document.positionAt(document.getText().length)
+    );
+    await activeEditor.edit(editBuilder => {
+        editBuilder.replace(entireRange, data);
+    });
+    await document.save();
+    vscode.window.showInformationMessage('El archivo ha sido sobrescrito y guardado exitosamente.');
+}
+
 const getVariablesAuth = (config: vscode.WorkspaceConfiguration) => {
     const url = config.get<string>('urlScript') ?? '';
     const consumerKey = config.get<string>('consumerKey') ?? '';
@@ -81,6 +103,7 @@ const getVariablesAuth = (config: vscode.WorkspaceConfiguration) => {
     const realm = config.get<string>('realm') ?? '';
     return { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm };
 }
+
 const getAuthorization = (consumerKey: string, consumerSecret: string, accessToken: string, tokenSecret: string, realm: string, url: string, method: string) => {
     let oauth1 = new oauth({
         consumer: {
