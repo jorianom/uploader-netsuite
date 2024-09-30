@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const fielUpload = async (filePath: string) => {
+const fileUpload = async (filePath: string) => {
     vscode.window.showInformationMessage(`Archivo activo: ${path.basename(filePath)}`);
 
     const data = await readFile(filePath);
@@ -16,6 +16,29 @@ const fielUpload = async (filePath: string) => {
         return;
     }
     sendFile(filePath);
+}
+const fileDownload = async (filePath: string) => {
+    let config = vscode.workspace.getConfiguration('uploaderNetSuite');
+    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(config);
+    let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
+    try {
+        let data = {
+            filename: path.basename(filePath),
+            method: 'PULL'
+        }
+        const response = await axios.post(url, data, {
+            headers: { ...authHeaders, "Content-Type": "application/json" },
+        });
+        if (!response.data.success) {
+            let error = response.data.message;
+            message('Hubo un problema al obtener el archivo ' + error, true);
+        } else {
+            message('Archivo obtenido correctamente');
+        }
+    } catch (error) {
+        message('Error al obtener el archivo ' + error, true);
+        console.error('Error al obtener el archivo:', error);
+    }
 }
 const getFileData = (filePath: string) => {
     let fileContents = fs.readFileSync(filePath, 'base64');
@@ -26,10 +49,10 @@ const getFileData = (filePath: string) => {
     }
 }
 async function sendFile(filePath: string) {
-    const config = vscode.workspace.getConfiguration('uploaderNetSuite');
-    const { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(config);
-    let data = getFileData(filePath);
-    let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url);
+    let config = vscode.workspace.getConfiguration('uploaderNetSuite');
+    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(config);
+    let data = { ...getFileData(filePath), method: 'PUSH' };
+    let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
     try {
         const response = await axios.post(url, data, {
             headers: {
@@ -58,7 +81,7 @@ const getVariablesAuth = (config: vscode.WorkspaceConfiguration) => {
     const realm = config.get<string>('realm') ?? '';
     return { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm };
 }
-const getAuthorization = (consumerKey: string, consumerSecret: string, accessToken: string, tokenSecret: string, realm: string, url: string) => {
+const getAuthorization = (consumerKey: string, consumerSecret: string, accessToken: string, tokenSecret: string, realm: string, url: string, method: string) => {
     let oauth1 = new oauth({
         consumer: {
             key: consumerKey,
@@ -75,7 +98,7 @@ const getAuthorization = (consumerKey: string, consumerSecret: string, accessTok
     };
     const request_data = {
         url: url,
-        method: 'POST',
+        method: method ?? 'POST',
     };
     const authHeaders = oauth1.toHeader(oauth1.authorize(request_data, token));
     authHeaders['Authorization'] += `, realm="${realm}"`; // Añade el realm
@@ -105,4 +128,4 @@ function message(message: string, error: boolean = false) {
     }
 }
 
-export { fielUpload }
+export { fileUpload, fileDownload }

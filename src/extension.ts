@@ -16,16 +16,29 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('uploader-netsuite.Netsuite:Push File', async () => {
+	const pushFile = vscode.commands.registerCommand('uploader-netsuite.Netsuite:Push File', async () => {
+		const activeEditor = vscode.window.activeTextEditor;
+		if (activeEditor) {
+			
+			const document = activeEditor.document;
+			if (document.isDirty) {
+				await document.save();
+				vscode.window.showInformationMessage(`Archivo guardado: ${document.fileName}`);
+			}
+			const filePath = activeEditor.document.uri.fsPath;
+			uploaderNetsuite.fileUpload(filePath);
+		}
+	});
+	const pullFile = vscode.commands.registerCommand('uploader-netsuite.Netsuite:Pull File', async () => {
 		const activeEditor = vscode.window.activeTextEditor;
 		if (activeEditor) {
 			const filePath = activeEditor.document.uri.fsPath;
-			uploaderNetsuite.fielUpload(filePath);
+			uploaderNetsuite.fileDownload(filePath);
 		}
-		// vscode.window.showInformationMessage('Hello World from uploader-netsuite!');
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(pushFile);
+	context.subscriptions.push(pullFile);
 }
 
 // This method is called when your extension is deactivated
