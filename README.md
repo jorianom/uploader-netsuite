@@ -1,71 +1,42 @@
 # uploader-netsuite README
 
-This is the README for your extension "uploader-netsuite". After writing up a brief description, we recommend including the following sections.
+Uploader NetSuite es una extensión para Visual Studio Code diseñada para facilitar la carga y sincronización de scripts en NetSuite directamente desde el editor. Con esta herramienta, puedes administrar tus scripts sin tener que salir del entorno de desarrollo.
 
-## Features
+## Principales características:
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+* Autenticación OAuth 1.0: Configura tus credenciales de NetSuite y autentícate de manera segura.
+* Sincronización automática: Sube y actualiza tus scripts de NetSuite con un solo clic.
+* Autoguardado: Guarda automáticamente los archivos antes de ser enviados.
+* Snippets personalizados: Genera estructuras comunes de scripts en NetSuite (Suitelet, Restlet, Map/Reduce, etc.) con atajos de código.
 
-For example if there is an image subfolder under your extension project workspace:
+## Requerimentos
 
-\!\[feature X\]\(images/feature-x.png\)
+Esta extensión requiere:
+* NetSuite: Una cuenta válida con acceso a RESTlets o SuiteScripts.
+* Credenciales OAuth 1.0: Para interactuar con los servicios de NetSuite (Consumer Key, Consumer Secret, Access Token, etc.).
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Configuración
 
-## Requirements
+Esta extensión añade las siguientes configuraciones al archivo de settings.json de VS Code:
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+* uploaderNetsuite.consumerKey: Tu Consumer Key para la autenticación en NetSuite.
+* uploaderNetsuite.consumerSecret: Tu Consumer Secret para la autenticación en NetSuite.
+* uploaderNetsuite.accessToken: Tu Access Token para NetSuite.
+* uploaderNetsuite.tokenSecret: Tu Token Secret para NetSuite.
+* uploaderNetsuite.realm: El ID de tu cuenta de NetSuite.
+* Para configurar estas opciones, ve a Preferencias > Configuración y busca "Settings Uploader Netsuite".
 
-## Extension Settings
+## Problemas conocidos:
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+* La autenticación OAuth 1.0 puede fallar si las credenciales no son correctas.
+* La función de exploración de archivos no es compatible con ciertos sistemas de archivos externos.
 
-For example:
+Si encuentras algún problema, por favor repórtalo en el [repositorio del proyecto.](https://github.com/jorianom/uploader-netsuite)
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
+## Notas de versión
 ### 1.0.0
-
-Initial release of ...
-
+* Primera versión: Funcionalidades básicas de sincronización de scripts y autenticación.
 ### 1.0.1
+* Nuevas características: Snippets para generar automáticamente scripts Suitelet, Restlet, Schedule y Map/Reduce.
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**¡Disfruta desarrollando con Uploader NetSuite!**
