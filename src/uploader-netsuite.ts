@@ -1,15 +1,15 @@
 
 import { readFile } from 'fs/promises';
-import axios from 'axios'
+import axios, { get } from 'axios'
 import crypto from 'crypto';
 import oauth from 'oauth-1.0a';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
+
 const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor) => {
-    let config = vscode.workspace.getConfiguration('uploaderNetSuite');
-    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(config);
+    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth();
     let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
     try {
         let data = {
@@ -35,8 +35,7 @@ const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor) =
 }
 
 async function sendFile(filePath: string) {
-    let config = vscode.workspace.getConfiguration('uploaderNetSuite');
-    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(config);
+    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth();
     let data = { ...getFileData(filePath), method: 'PUSH' };
     let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
     try {
@@ -94,7 +93,8 @@ const updateFile = async (data: string, activeEditor: vscode.TextEditor) => {
     vscode.window.showInformationMessage('El archivo ha sido sobrescrito y guardado exitosamente.');
 }
 
-const getVariablesAuth = (config: vscode.WorkspaceConfiguration) => {
+const getVariablesAuth = () => {
+    let config = vscode.workspace.getConfiguration('uploaderNetSuite');
     const url = config.get<string>('urlScript') ?? '';
     const consumerKey = config.get<string>('consumerKey') ?? '';
     const consumerSecret = config.get<string>('consumerSecret') ?? '';
@@ -104,6 +104,10 @@ const getVariablesAuth = (config: vscode.WorkspaceConfiguration) => {
     return { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm };
 }
 
+const validateVariablesAuth = () => {
+    let variables = getVariablesAuth();
+    return Object.values(variables).every(value => value !== null && value !== undefined && value !== '');
+}
 const getAuthorization = (consumerKey: string, consumerSecret: string, accessToken: string, tokenSecret: string, realm: string, url: string, method: string) => {
     let oauth1 = new oauth({
         consumer: {
@@ -151,4 +155,4 @@ function message(message: string, error: boolean = false) {
     }
 }
 
-export { fileUpload, fileDownload }
+export { fileUpload, fileDownload, validateVariablesAuth }

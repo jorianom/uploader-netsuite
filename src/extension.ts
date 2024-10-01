@@ -22,8 +22,12 @@ export function activate(context: vscode.ExtensionContext) {
 				await document.save();
 				vscode.window.showInformationMessage(`Archivo guardado: ${document.fileName}`);
 			}
-			const filePath = activeEditor.document.uri.fsPath;
-			uploaderNetsuite.fileUpload(filePath);
+			if (uploaderNetsuite.validateVariablesAuth()) {
+				const filePath = activeEditor.document.uri.fsPath;
+				uploaderNetsuite.fileUpload(filePath);
+			} else {
+				vscode.window.showErrorMessage('Por favor, configure las variables de autenticación en el archivo settings.json');
+			}
 		}
 	});
 

@@ -14,37 +14,37 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Uploader NetSuite Settings",
+      "title": "Settings Uploader NetSuite",
       "properties": {
         "uploaderNetSuite.consumerKey": {
           "type": "string",
           "default": "",
-          "description": "Tu API Key para conectar a NetSuite"
+          "description": "Tu Cosumer-Key necesario para conectar a NetSuite"
         },
         "uploaderNetSuite.consumerSecret": {
           "type": "string",
           "default": "",
-          "description": "Tu API Secret para conectar a NetSuite"
+          "description": "Tu Consumer-Secret necesario para conectar a NetSuite"
         },
         "uploaderNetSuite.accessToken": {
           "type": "string",
           "default": "",
-          "description": "Ruta del archivo a subir a NetSuite"
+          "description": "Tu Access-Token necesario para conectar a NetSuite"
         },
         "uploaderNetSuite.tokenSecret": {
           "type": "string",
           "default": "",
-          "description": "ID de la carpeta en NetSuite donde se subirá el archivo"
+          "description": "Tu Token-Secret necesario para conectar a NetSuite"
         },
         "uploaderNetSuite.urlScript": {
           "type": "string",
           "default": "",
-          "description": "ID de la carpeta en NetSuite donde se subirá el archivo"
+          "description": "Url despliegue de tu script en NetSuite"
         },
         "uploaderNetSuite.realm": {
           "type": "string",
           "default": "",
-          "description": "ID de la carpeta en NetSuite donde se subirá el archivo"
+          "description": "Realm de tu cuenta de NetSuite"
         }
       }
     },
@@ -58,27 +58,12 @@
         "title": "Pull File from NetSuite"
       }
     ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "uploader-netsuite",
-          "title": "Uploader Netsuite",
-          "icon": "src/resources/upload.svg"
-        }
-      ]
-    },
-    "views": {
-      "uploader-netsuite": [
-        {
-          "id": "uploader-netsuite",
-          "name": "Uploader Netsuite"
-        },
-        {
-          "id": "uploader-net",
-          "name": "Uploader Net"
-        }
-      ]
-    },
+    "snippets": [
+      {
+        "language": "javascript",
+        "path": "./src/snippets/snippets.json"
+      }
+    ],
     "viewsWelcome": [
       {
         "view": "uploader-netsuite",
