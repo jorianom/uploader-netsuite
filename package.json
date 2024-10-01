@@ -2,7 +2,9 @@
   "name": "uploader-netsuite",
   "displayName": "uploader-netsuite",
   "description": "",
-  "version": "0.0.1",
+  "version": "1.0.1",
+  "publisher": "jorianom",
+  "icon": "resources/uploader.png",
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -102,5 +104,10 @@
     "crypto": "^1.0.1",
     "form-data": "^4.0.0",
     "oauth-1.0a": "^2.2.6"
+  },
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jorianom/uploader-netsuite.git"
   }
 }
