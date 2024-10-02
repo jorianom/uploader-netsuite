@@ -63,7 +63,7 @@
     "snippets": [
       {
         "language": "javascript",
-        "path": "./src/snippets/snippets.json"
+        "path": "snippets/snippets.json"
       }
     ],
     "viewsWelcome": [

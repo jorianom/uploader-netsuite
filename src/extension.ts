@@ -20,14 +20,15 @@ export function activate(context: vscode.ExtensionContext) {
 			const document = activeEditor.document;
 			if (document.isDirty) {
 				await document.save();
-				vscode.window.showInformationMessage(`Archivo guardado: ${document.fileName}`);
 			}
 			if (uploaderNetsuite.validateVariablesAuth()) {
 				const filePath = activeEditor.document.uri.fsPath;
 				uploaderNetsuite.fileUpload(filePath);
 			} else {
-				vscode.window.showErrorMessage('Por favor, configure las variables de autenticación en el archivo settings.json');
+				uploaderNetsuite.message('Por favor, configure las variables de autenticación en el archivo settings.json', true);
 			}
+		} else {
+			uploaderNetsuite.message('No hay ningún editor activo para subir el archivo.', true);
 		}
 	});
 
@@ -36,6 +37,8 @@ export function activate(context: vscode.ExtensionContext) {
 		if (activeEditor) {
 			const filePath = activeEditor.document.uri.fsPath;
 			uploaderNetsuite.fileDownload(filePath, activeEditor);
+		} else {
+			uploaderNetsuite.message('No hay ningún editor activo para descargar el archivo.', true);
 		}
 	});
 

@@ -8,7 +8,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 
-const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor) => {
+const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor, backup: boolean = false) => {
     let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth();
     let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
     try {
@@ -19,18 +19,20 @@ const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor) =
         const response = await axios.post(url, data, {
             headers: { ...authHeaders, "Content-Type": "application/json" },
         });
-
-        console.log('Respuesta de NetSuite:', response.data);
         if (!response.data.success) {
             let error = response.data.message;
-            message('Hubo un problema al obtener el archivo ' + error, true);
+            message('Hubo un problema al recuperar el archivo ' + error, true);
         } else {
-            message('Archivo obtenido correctamente');
-            updateFile(response.data.fileContent, activeEditor);
+            if (backup) {
+                backupFile(data.filename, response.data.fileContent);
+            } else {
+                // message('El archivo ha sido recuperado exitosamente.');
+                updateFile(response.data.fileContent, activeEditor);
+            }
         }
     } catch (error) {
-        message('Error al obtener el archivo ' + error, true);
-        console.error('Error al obtener el archivo:', error);
+        message('Error al recuperar el archivo ' + error, true);
+        console.error('Error al recuperar el archivo:', error);
     }
 }
 
@@ -44,11 +46,16 @@ async function sendFile(filePath: string) {
                 ...authHeaders,
             }
         });
-        console.log('Respuesta de NetSuite:', response.data);
         if (!response.data.success) {
             let error = response.data.message;
             message('Hubo un problema al subir el archivo ' + error, true);
         } else {
+            const activeEditor = vscode.window.activeTextEditor;
+            if (activeEditor) {
+                fileDownload(filePath, activeEditor, true);
+            } else {
+                message('No hay ningún editor activo para descargar el archivo.', true);
+            }
             message('Archivo subido correctamente');
         }
     } catch (error) {
@@ -56,9 +63,36 @@ async function sendFile(filePath: string) {
         console.error('Error al enviar el archivo:', error);
     }
 }
-
+const createBackupFolder = (workspaceFolders: vscode.WorkspaceFolder[]) => {
+    const currentDir = workspaceFolders[0].uri.fsPath;
+    const backupFolderPath = path.join(currentDir, 'backup');
+    if (!fs.existsSync(backupFolderPath)) {
+        fs.mkdirSync(backupFolderPath);
+        // message('Carpeta de respaldo creada correctamente.');
+    }
+}
+const backupFile = async (filename: string, fileContent: string) => {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+        message('No hay carpetas abiertas en el espacio de trabajo.', true);
+        return;
+    }
+    createBackupFolder(Array.from(workspaceFolders));
+    const currentDir = workspaceFolders[0].uri.fsPath;
+    const backupFilePath = path.join(currentDir, 'backup', filename);
+    if (fs.existsSync(backupFilePath)) {
+        return;
+    }
+    fs.writeFile(backupFilePath, fileContent, 'utf8', (err) => {
+        if (err) {
+            message('Error al guardar el archivo ' + err.message, true);
+        } else {
+            message('Archivo guardado correctamente en backup');
+        }
+    });
+}
 const fileUpload = async (filePath: string) => {
-    vscode.window.showInformationMessage(`Archivo activo: ${path.basename(filePath)}`);
+    message('Archivo en proceso de envío... ' + path.basename(filePath));
     const data = await readFile(filePath);
     let flagValidateFile = validateFile(data.toString(), filePath);
     if (!flagValidateFile) {
@@ -78,7 +112,7 @@ const getFileData = (filePath: string) => {
 
 const updateFile = async (data: string, activeEditor: vscode.TextEditor) => {
     if (!activeEditor) {
-        vscode.window.showErrorMessage('No hay ningún archivo activo para sobrescribir.');
+        message('No hay ningún archivo activo para sobrescribir.', true);
         return;
     }
     const document = activeEditor.document;
@@ -90,7 +124,7 @@ const updateFile = async (data: string, activeEditor: vscode.TextEditor) => {
         editBuilder.replace(entireRange, data);
     });
     await document.save();
-    vscode.window.showInformationMessage('El archivo ha sido sobrescrito y guardado exitosamente.');
+    message('El archivo ha sido sobrescrito y guardado exitosamente.');
 }
 
 const getVariablesAuth = () => {
@@ -135,14 +169,14 @@ const getAuthorization = (consumerKey: string, consumerSecret: string, accessTok
 const validateFile = (data: string, filePath: string) => {
     let flag = true;
     if (!filePath.endsWith('.js')) {
-        vscode.window.showErrorMessage('El archivo no es un archivo .js');
+        message('El archivo no es un archivo .js', true);
         flag = false;
     }
     const hasNApiVersion = data.includes('@NApiVersion');
     const hasNScriptType = data.includes('@NScriptType');
     if (!hasNApiVersion || !hasNScriptType) {
         flag = false;
-        vscode.window.showErrorMessage('El archivo no tiene las etiquetas correspondientes de netsuite');
+        message('El archivo no tiene las etiquetas correspondientes de netsuite', true);
     }
     return flag;
 }
@@ -155,4 +189,4 @@ function message(message: string, error: boolean = false) {
     }
 }
 
-export { fileUpload, fileDownload, validateVariablesAuth }
+export { fileUpload, fileDownload, validateVariablesAuth, message }
