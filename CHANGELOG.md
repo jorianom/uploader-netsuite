@@ -1,9 +1,9 @@
-# Change Log
+## Notas de versión
 
-All notable changes to the "uploader-netsuite" extension will be documented in this file.
+### 1.1.0
+* **Nuevas características**:
+  - Snippets para generar automáticamente scripts Suitelet, Restlet, Schedule y Map/Reduce.
+  - **Nueva funcionalidad**: Backups automáticos de archivos antes de enviarlos a NetSuite. Los archivos se almacenan en una carpeta llamada `backup` en el directorio del proyecto y se asegura que no se sobrescriban.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+### 1.0.0
+* **Primera versión**: Funcionalidades básicas de sincronización de scripts y autenticación.

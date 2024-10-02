@@ -5,7 +5,7 @@ Uploader NetSuite es una extensión para Visual Studio Code diseñada para facil
 ## Principales características:
 
 * Autenticación OAuth 1.0: Configura tus credenciales de NetSuite y autentícate de manera segura.
-* Sincronización automática: Sube y actualiza tus scripts de NetSuite con un solo clic.
+* Sincronización automática: Sube y actualiza tus scripts de NetSuite con un solo comando.
 * Autoguardado: Guarda automáticamente los archivos antes de ser enviados.
 * Snippets personalizados: Genera estructuras comunes de scripts en NetSuite (Suitelet, Restlet, Map/Reduce, etc.) con atajos de código.
 
@@ -24,7 +24,27 @@ Esta extensión añade las siguientes configuraciones al archivo de settings.jso
 * uploaderNetsuite.accessToken: Tu Access Token para NetSuite.
 * uploaderNetsuite.tokenSecret: Tu Token Secret para NetSuite.
 * uploaderNetsuite.realm: El ID de tu cuenta de NetSuite.
-* Para configurar estas opciones, ve a Preferencias > Configuración y busca "Settings Uploader Netsuite".
+* Para configurar estas opciones, ve a Archivo > Preferencias > Configuración y busca "Settings Uploader Netsuite".
+
+## Cómo usar Uploader NetSuite
+
+### Comandos
+
+Exta extensión ofrece varios comandos útiles que puedes ejecutar desde la paleta de comandos de Visual Studio Code. Para acceder a la paleta de comandos, presiona `Ctrl+Shift+P` y escribe el nombre del comando.
+Aquí tienes una lista de los comandos disponibles:
+
+- **`Push File to NetSuite`**
+  - Sube el archivo actual a NetSuite y crea un `backup` solo si no existe uno previamente.
+  
+- **`Pull File from NetSuite`**
+  - Recupera el archivo actual desde NetSuite y lo guarda en el directorio local del proyecto.
+  
+### Snippets
+- Snippet: **`nmapreduce`** Crea una estructura básica de un **`Map/Reduce`** Script en NetSuite
+- Snippet: **`nrestlet`** Crea una estructura básica de un **`Restlet`** en NetSuite
+- Snippet: **`nsuitelet`** Crea una estructura básica de un **`Suitelet`** en NetSuite
+- Snippet: **`nscheduled`** Crea una estructura básica de un **`Scheduled`** Script en NetSuite
+- Snippet: **`npublic`** Crea una estructura básica de un **`módulo público`** en NetSuite
 
 ## Problemas conocidos:
 
@@ -35,8 +55,8 @@ Si encuentras algún problema, por favor repórtalo en el [repositorio del proye
 
 ## Notas de versión
 ### 1.0.0
-* Primera versión: Funcionalidades básicas de sincronización de scripts y autenticación.
-### 1.0.1
-* Nuevas características: Snippets para generar automáticamente scripts Suitelet, Restlet, Schedule y Map/Reduce.
-
+* **Primera versión**: Funcionalidades básicas de sincronización de scripts y autenticación.
+### 1.1.0
+* **Nuevas características**: Snippets para generar automáticamente scripts Suitelet, Restlet, Schedule y Map/Reduce.
+* **Nueva funcionalidad**: Backups automáticos de archivos antes de enviarlos a NetSuite. Los archivos se almacenan en una carpeta llamada `backup` en el directorio del proyecto y se asegura que no se sobrescriban
 **¡Disfruta desarrollando con Uploader NetSuite!**
