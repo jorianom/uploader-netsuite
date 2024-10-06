@@ -2,6 +2,8 @@
 
 Uploader NetSuite es una extensión para Visual Studio Code diseñada para facilitar la carga y sincronización de scripts en NetSuite directamente desde el editor. Con esta herramienta, puedes administrar tus scripts sin tener que salir del entorno de desarrollo.
 
+[Visita Marketplace](https://marketplace.visualstudio.com/items?itemName=jorianom.uploader-netsuite) 
+
 ## Principales características:
 
 * Autenticación OAuth 1.0: Configura tus credenciales de NetSuite y autentícate de manera segura.

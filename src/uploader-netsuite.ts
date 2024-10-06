@@ -41,6 +41,12 @@ async function sendFile(filePath: string) {
     let data = { ...getFileData(filePath), method: 'PUSH' };
     let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
     try {
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor) {
+            fileDownload(filePath, activeEditor, true);
+        } else {
+            message('No hay ningún editor activo para hacer backup del archivo.', true);
+        }
         const response = await axios.post(url, data, {
             headers: {
                 ...authHeaders,
@@ -50,12 +56,6 @@ async function sendFile(filePath: string) {
             let error = response.data.message;
             message('Hubo un problema al subir el archivo ' + error, true);
         } else {
-            const activeEditor = vscode.window.activeTextEditor;
-            if (activeEditor) {
-                fileDownload(filePath, activeEditor, true);
-            } else {
-                message('No hay ningún editor activo para descargar el archivo.', true);
-            }
             message('Archivo subido correctamente');
         }
     } catch (error) {

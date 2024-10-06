@@ -2,7 +2,7 @@
   "name": "uploader-netsuite",
   "displayName": "uploader-netsuite",
   "description": "",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "jorianom",
   "icon": "resources/uploader.png",
   "engines": {
