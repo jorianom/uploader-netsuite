@@ -61,4 +61,12 @@ const ValidateConfig = (isProd: Boolean = false) => {
     }
 }
 
-export { message, getVariablesAuth, validateVariablesAuth, validateEditor, ValidateConfig, saveFileByPath };
+const closeWindow = () => {
+    vscode.commands.executeCommand('workbench.action.closeActiveEditor')
+        .then(
+            () => console.log('cerrada con éxito.'),
+            (err) => console.log(`Error cerrando la ventana: ${err}`)
+        );
+};
+
+export { message, getVariablesAuth, validateVariablesAuth, validateEditor, ValidateConfig, saveFileByPath, closeWindow };

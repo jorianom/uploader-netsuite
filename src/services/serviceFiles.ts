@@ -63,7 +63,7 @@ const validateFile = (data: string, filePath: string) => {
 }
 
 const compareFiles = (file1Uri: vscode.Uri, file2Uri: vscode.Uri) => {
-    const title = `Comparación entre Archivo Local y Archivo PROD}`;
+    const title = `Comparación entre Archivo Local y Archivo PROD`;
     vscode.commands.executeCommand('vscode.diff', file1Uri, file2Uri, title)
         .then(
             () => console.log('Comparación de archivos realizada con éxito.'),

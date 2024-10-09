@@ -34,7 +34,7 @@ const compareFilePD = async (filePath: string, activeEditor: vscode.TextEditor) 
         return;
     }
     compareFiles(vscode.Uri.file(filePath), vscode.Uri.file(fileBackup));
-    createSendButton(filePath);
+    createSendButton(filePath, filePath, fileBackup);
 }
 
 const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor, backup: boolean = false, isProd: Boolean = false) => {
