@@ -16,6 +16,7 @@ Uploader NetSuite es una extensión para Visual Studio Code diseñada para facil
 Esta extensión requiere:
 * NetSuite: Una cuenta válida con acceso a RESTlets o SuiteScripts.
 * Credenciales OAuth 1.0: Para interactuar con los servicios de NetSuite (Consumer Key, Consumer Secret, Access Token, etc.).
+* Implementación del script tipo restlet en tu cuenta de netsuite: Lo puedes encontrar [aca](https://github.com/jorianom/uploader-netsuite/blob/master/resources/script/script_restlet.js). 
 
 ## Configuración
 
@@ -25,6 +26,10 @@ Esta extensión añade las siguientes configuraciones al archivo de settings.jso
 * uploaderNetsuite.consumerSecret: Tu Consumer Secret para la autenticación en NetSuite.
 * uploaderNetsuite.accessToken: Tu Access Token para NetSuite.
 * uploaderNetsuite.tokenSecret: Tu Token Secret para NetSuite.
+* uploaderNetsuite.consumerKeyPD: Tu Consumer Key para la autenticación en NetSuite.
+* uploaderNetsuite.consumerSecretPD: Tu Consumer Secret para la autenticación en NetSuite.
+* uploaderNetsuite.accessTokenPD: Tu Access Token para NetSuite.
+* uploaderNetsuite.tokenSecretPD: Tu Token Secret para NetSuite.
 * uploaderNetsuite.realm: El ID de tu cuenta de NetSuite.
 * Para configurar estas opciones, ve a Archivo > Preferencias > Configuración y busca "Settings Uploader Netsuite".
 
@@ -37,6 +42,9 @@ Aquí tienes una lista de los comandos disponibles:
 
 - **`Push File to NetSuite`**
   - Sube el archivo actual a NetSuite y crea un `backup` solo si no existe uno previamente.
+  
+- **`Push PD File to NetSuite`**
+  - Compara el archivo local con el backup en `backupPD`. Después de revisar las diferencias, podrás hacer clic  en el botón `Enviar archivo a NetSuite`, ubicado en la barra de estado. Este botón te permitirá seleccionar y confirmar el envío del archivo al entorno de producción (NetSuite PD).
   
 - **`Pull File from NetSuite`**
   - Recupera el archivo actual desde NetSuite y lo guarda en el directorio local del proyecto.
@@ -61,4 +69,8 @@ Si encuentras algún problema, por favor repórtalo en el [repositorio del proye
 ### 1.1.0
 * **Nuevas características**: Snippets para generar automáticamente scripts Suitelet, Restlet, Schedule y Map/Reduce.
 * **Nueva funcionalidad**: Backups automáticos de archivos antes de enviarlos a NetSuite. Los archivos se almacenan en una carpeta llamada `backup` en el directorio del proyecto y se asegura que no se sobrescriban
+### 1.2.0
+* **Nueva funcionalidad**: Comparación de archivos locales con `backupPD` antes de enviarlos a NetSuite PD.
+* **Nueva funcionalidad**: Comando interactivo para subir archivos a producción después de la revisión de cambios.
+
 **¡Disfruta desarrollando con Uploader NetSuite!**

@@ -2,7 +2,7 @@
   "name": "uploader-netsuite",
   "displayName": "uploader-netsuite",
   "description": "",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "jorianom",
   "icon": "resources/uploader.png",
   "engines": {
@@ -18,35 +18,60 @@
       "type": "object",
       "title": "Settings Uploader NetSuite",
       "properties": {
-        "uploaderNetSuite.consumerKey": {
+        "uploaderNetsuite.consumerKey": {
           "type": "string",
           "default": "",
           "description": "Tu Cosumer-Key necesario para conectar a NetSuite"
         },
-        "uploaderNetSuite.consumerSecret": {
+        "uploaderNetsuite.consumerSecret": {
           "type": "string",
           "default": "",
           "description": "Tu Consumer-Secret necesario para conectar a NetSuite"
         },
-        "uploaderNetSuite.accessToken": {
+        "uploaderNetsuite.accessToken": {
           "type": "string",
           "default": "",
           "description": "Tu Access-Token necesario para conectar a NetSuite"
         },
-        "uploaderNetSuite.tokenSecret": {
+        "uploaderNetsuite.tokenSecret": {
           "type": "string",
           "default": "",
           "description": "Tu Token-Secret necesario para conectar a NetSuite"
         },
-        "uploaderNetSuite.urlScript": {
+        "uploaderNetsuite.urlScript": {
           "type": "string",
           "default": "",
           "description": "Url despliegue de tu script en NetSuite"
         },
-        "uploaderNetSuite.realm": {
+        "uploaderNetsuite.realm": {
           "type": "string",
           "default": "",
           "description": "Realm de tu cuenta de NetSuite"
+        },
+        "uploaderNetsuite.consumerKeyPD": {
+          "type": "string",
+          "default": "",
+          "description": "Tu Cosumer-Key necesario para conectar a NetSuite"
+        },
+        "uploaderNetsuite.consumerSecretPD": {
+          "type": "string",
+          "default": "",
+          "description": "Tu Consumer-Secret necesario para conectar a NetSuite"
+        },
+        "uploaderNetsuite.accessTokenPD": {
+          "type": "string",
+          "default": "",
+          "description": "Tu Access-Token necesario para conectar a NetSuite"
+        },
+        "uploaderNetsuite.tokenSecretPD": {
+          "type": "string",
+          "default": "",
+          "description": "Tu Token-Secret necesario para conectar a NetSuite"
+        },
+        "uploaderNetsuite.urlScriptPD": {
+          "type": "string",
+          "default": "",
+          "description": "Url despliegue de tu script en NetSuite"
         }
       }
     },
@@ -58,6 +83,10 @@
       {
         "command": "uploader-netsuite.Netsuite:Pull File",
         "title": "Pull File from NetSuite"
+      },
+      {
+        "command": "uploader-netsuite.Netsuite PROD:Push File",
+        "title": "Push PD File to NetSuite"
       }
     ],
     "snippets": [

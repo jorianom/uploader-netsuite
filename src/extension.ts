@@ -15,35 +15,19 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	const pushFile = vscode.commands.registerCommand('uploader-netsuite.Netsuite:Push File', async () => {
-		const activeEditor = vscode.window.activeTextEditor;
-		if (activeEditor) {
-			const document = activeEditor.document;
-			if (document.isDirty) {
-				await document.save();
-			}
-			if (uploaderNetsuite.validateVariablesAuth()) {
-				const filePath = activeEditor.document.uri.fsPath;
-				uploaderNetsuite.fileUpload(filePath);
-			} else {
-				uploaderNetsuite.message('Por favor, configure las variables de autenticación en el archivo settings.json', true);
-			}
-		} else {
-			uploaderNetsuite.message('No hay ningún editor activo para subir el archivo.', true);
-		}
+		uploaderNetsuite.pushFile();
+	});
+	const pushFileProd = vscode.commands.registerCommand('uploader-netsuite.Netsuite PROD:Push File', async () => {
+		uploaderNetsuite.pushFilePD();
 	});
 
 	const pullFile = vscode.commands.registerCommand('uploader-netsuite.Netsuite:Pull File', async () => {
-		const activeEditor = vscode.window.activeTextEditor;
-		if (activeEditor) {
-			const filePath = activeEditor.document.uri.fsPath;
-			uploaderNetsuite.fileDownload(filePath, activeEditor);
-		} else {
-			uploaderNetsuite.message('No hay ningún editor activo para descargar el archivo.', true);
-		}
+		uploaderNetsuite.pullFile();
 	});
 
 	context.subscriptions.push(pushFile);
 	context.subscriptions.push(pullFile);
+	context.subscriptions.push(pushFileProd);
 }
 
 // This method is called when your extension is deactivated

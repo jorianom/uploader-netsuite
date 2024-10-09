@@ -1,5 +1,9 @@
 ## Notas de versión
 
+### 1.2.0
+* **Nueva funcionalidad**: Comparación de archivos locales con `backupPD` antes de enviarlos a NetSuite PD.
+* **Nueva funcionalidad**: Comando interactivo para subir archivos a producción después de la revisión de cambios.
+  
 ### 1.1.0
 * **Nuevas características**:
   - Snippets para generar automáticamente scripts Suitelet, Restlet, Schedule y Map/Reduce.
