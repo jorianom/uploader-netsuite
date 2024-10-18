@@ -38,7 +38,7 @@ const compareFilePD = async (filePath: string, activeEditor: vscode.TextEditor) 
 }
 
 const fileDownload = async (filePath: string, activeEditor: vscode.TextEditor, backup: boolean = false, isProd: Boolean = false) => {
-    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth();
+    let { url, consumerKey, consumerSecret, accessToken, tokenSecret, realm } = getVariablesAuth(isProd);
     let authHeaders = getAuthorization(consumerKey, consumerSecret, accessToken, tokenSecret, realm, url, 'POST');
     try {
         let data = {
